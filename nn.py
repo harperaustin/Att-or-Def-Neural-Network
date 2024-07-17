@@ -10,7 +10,18 @@ def sigmoid(x):
 def sigmoid_derivative(x):
     #The deriviate of the sigmoid function.
     fx = sigmoid(x)
-    return fx * (1-fx)
+    return fx * (1 - fx)
+
+def mse_loss(y_true, y_pred):
+    """
+    A function that calculates the loss of the neural network by using
+    the mean squared error.
+    
+    y_true and y_pred are numpy arrays of the same length
+    - y_true is an array of the true values of an input
+    - y_pred is an array of the predicted values of an input
+    """
+    return ((y_true - y_pred) ** 2).mean()
 
 """
 weights = np.array([0,1])
@@ -57,7 +68,7 @@ class My_NN:
         h2 = sigmoid(self.w3 * x[0] + self.w4 * x[1] + self.b2)
 
         #Give the output layer the values from the hidden layer
-        o1 = sigmoid(self.w3 * h1 + self.w4 * h2 + self.b3)
+        o1 = sigmoid(self.w5 * h1 + self.w6 * h2 + self.b3)
 
         return o1
     
@@ -69,9 +80,9 @@ class My_NN:
         The elements in all_y_true correspond to the elements in data
         """
 
-        learn_rate = 0.1
+        learn_rate = 0.01
         
-        epochs = 1000 #number of times to loop through the entire dataset
+        epochs = 10000 #number of times to loop through the entire dataset
 
         for epoch in range(epochs):
             for x, y_true in zip(data, all_y_trues):
@@ -116,7 +127,7 @@ class My_NN:
                 #Updating Neuron h1:
                 self.w1 -= learn_rate * dL_dypred * dypred_dh1 * dh1_dw1
                 self.w2 -= learn_rate * dL_dypred * dypred_dh1 * dh1_dw2
-                self.b1 -= learn_rate * dL_dypred * dypred_dh1 * dh1_dw1
+                self.b1 -= learn_rate * dL_dypred * dypred_dh1 * dh1_db1
 
                 #Updating Neuron h2:
                 self.w3 -= learn_rate * dL_dypred * dypred_dh2 * dh2_dw3
@@ -131,23 +142,14 @@ class My_NN:
 
 
                 #Calculate the total loss at the end of each epoch
-                if epoch % 10 == 0:
+                if epoch % 250 == 0:
                     y_preds = np.apply_along_axis(self.feedforward, 1, data)
                     loss = mse_loss(all_y_trues, y_preds)
                     print("EPOCH %d loss: %.3f" % (epoch, loss))
 
     
 
-def mse_loss(y_true, y_pred):
-    """
-    A function that calculates the loss of the neural network by using
-    the mean squared error.
-    
-    y_true and y_pred are numpy arrays of the same length
-    - y_true is an array of the true values of an input
-    - y_pred is an array of the predicted values of an input
-    """
-    return ((y_true - y_pred)**2).mean()
+
 
 
 data = np.array([
