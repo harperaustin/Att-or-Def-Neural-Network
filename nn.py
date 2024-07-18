@@ -142,7 +142,7 @@ class My_NN:
 
 
                 #Calculate the total loss at the end of each epoch
-                if epoch % 250 == 0:
+                if epoch % 500 == 0:
                     y_preds = np.apply_along_axis(self.feedforward, 1, data)
                     loss = mse_loss(all_y_trues, y_preds)
                     print("EPOCH %d loss: %.3f" % (epoch, loss))
@@ -150,25 +150,83 @@ class My_NN:
     
 
 
-
+#Soccer player stats, where the first number is the goals per game, 
+#and the second number is the assists per game.
 
 data = np.array([
-  [-2, -1],  # Alice
-  [25, 6],   # Bob
-  [17, 4],   # Charlie
-  [-15, -6], # Diana
+  [44/31, 13/31],  # Ronaldo
+  [14/15, 11/15], # Messi
+  [38/45, 6/45],  # Haaland
+  [44/45, 12/45],  # Kane
+  [44/48, 10/54],  # Mbappe
+  [23/42, 13/42],  # Bellingham
+  [18/49, 20/49],   # Wirtz
+  [4/48, 2/48], # Van Dijk
+  [6/40, 8/40], # Di Marco
+  [5/46, 11/46], # Theo Hernandez
+  [2/48, 3/48], # Rudiger
+  [0/47, 5/47], # Kyle Walker
+  [0/45, 0/45], # Ruben Dias
+  [0/45, 2/45], # Marquinhos
+  [2/50, 1/50] # Saliba
 ])
+
+#1 corresponds to an attacking player and 0 a defensive player
 
 all_y_trues = np.array([
-  1, # Alice
-  0, # Bob
-  0, # Charlie
-  1, # Diana
+  1, # Ronaldo
+  1, # Messi
+  1, # Haaland
+  1, # Kane
+  1, # Mbappe
+  1, # Bellingham
+  1, # Wirtz
+  0, # Van Dijk
+  0, # Di Marco
+  0, # Theo Hernandez
+  0, # Rudiger
+  0, #Kyle Walker
+  0, #Ruben Dias
+  0, #Marquinhos
+  0 #Saliba
 ])
 
-network = My_NN()
-network.train(data, all_y_trues)
+#network = My_NN()
+#network.train(data, all_y_trues)
 
+harper = np.array([30/43, 10/43])
+charlie = np.array([15, 5])
+girl = np.array([5, -1 ])
+#print("harp: %.3f" % network.feedforward(harper))
+#print("chuck: %.3f" % network.feedforward(charlie))
+#print("girl: %.3f" % network.feedforward(girl))
+
+def predictor():
+    name = input("\nWhat is the name of the player? ")
+    num_games = int(input("How many games did this player play in a single season? "))
+    num_goals = int(input("How many goals did they score? "))
+    num_ast = int(input("How many assists? "))
+
+    print("\n Training model... \n")
+    network = My_NN()
+    network.train(data, all_y_trues)
+
+    player = np.array([num_goals/num_games, num_ast/num_games])
+    output = network.feedforward(player)
+    print("\n" + name + ": %3f" % output)
+    if output <= 0.1:
+        print(name + " is certainly a defensive player.")
+    elif output > 0.1 and output <= 0.4:
+        print(name + " is a defensive playe.")
+    elif output > 0.4 and output < 0.6:
+        print("The NN is not sure if this player is defensive or offensive.")
+    elif output >= 0.6 and output < 0.9:
+        print(name + " is an offensive player.")
+    elif output >= 0.9:
+        print(name + " is certainly an offensive player.")
+
+
+predictor()
 
 
 
