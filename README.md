@@ -1,0 +1,3 @@
+- A small neural network consisting of 2 inputs, a hidden layer with 2 neurons, and 1 output
+- uses stochastic gradient descent as training method
+- tells you whether a soccer player is an attacking player or defensive player based off their goals per game and assists per game.
