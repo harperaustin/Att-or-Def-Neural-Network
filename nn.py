@@ -1,7 +1,6 @@
 import numpy as np
 
 
-
 def sigmoid(x):
     #This is the activation function that will be used to turn the unbounded input
     #into a predictable output. The function I am using is f(x) = 1/(1+(e^-x)), the sigmoid function.
@@ -23,13 +22,7 @@ def mse_loss(y_true, y_pred):
     """
     return ((y_true - y_pred) ** 2).mean()
 
-"""
-weights = np.array([0,1])
-bias = 4
-n = Neuron(weights, bias)
-x = np.array([2,3])
-print(n.feedforward(x))
-"""
+
 
 class My_NN:
     """
@@ -191,15 +184,7 @@ all_y_trues = np.array([
   0 #Saliba
 ])
 
-#network = My_NN()
-#network.train(data, all_y_trues)
 
-harper = np.array([30/43, 10/43])
-charlie = np.array([15, 5])
-girl = np.array([5, -1 ])
-#print("harp: %.3f" % network.feedforward(harper))
-#print("chuck: %.3f" % network.feedforward(charlie))
-#print("girl: %.3f" % network.feedforward(girl))
 
 def predictor():
     name = input("\nWhat is the name of the player? ")
